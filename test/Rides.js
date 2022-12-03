@@ -62,6 +62,23 @@ contract('Rides', (accounts) => {
         const originalPass = await instance.pass(ride_id);
         await instance.buyPass(ride_id, _fromAddress, _toAddress, {
             from : passenger, 
+            value : (1e17+1e16*10),
+        });
+        const updatedPass = await instance.pass(ride_id);
+        assert.equal(
+            updatedPass.owner,
+            passenger,
+            'the passenger should now have his/her ride confirmed'
+        );
+    });
+    it('should a pasenger be able to get a ride pass', async () => {
+        const passenger = accounts[4];
+        const _fromAddress = "Mehdipatnam", _toAddress = "Airport";
+        const ride_id = 3;
+        const instance = await Rides.deployed();
+        const originalPass = await instance.pass(ride_id);
+        await instance.buyPass(ride_id, _fromAddress, _toAddress, {
+            from : passenger, 
             value : (1e17+1e16*15),
         });
         const updatedPass = await instance.pass(ride_id);
